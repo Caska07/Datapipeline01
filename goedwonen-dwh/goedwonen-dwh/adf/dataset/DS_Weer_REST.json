@@ -1,0 +1,19 @@
+{
+    "name": "DS_Weer_REST",
+    "properties": {
+        "linkedServiceName": { "referenceName": "LS_OpenMeteo_REST", "type": "LinkedServiceReference" },
+        "type": "RestResource",
+        "parameters": {
+            "latitude": { "type": "string" },
+            "longitude": { "type": "string" },
+            "vanaf": { "type": "string" },
+            "tot": { "type": "string" }
+        },
+        "typeProperties": {
+            "relativeUrl": {
+                "value": "@concat('archive?latitude=', dataset().latitude, '&longitude=', dataset().longitude, '&start_date=', dataset().vanaf, '&end_date=', dataset().tot, '&daily=temperature_2m_mean,temperature_2m_min,temperature_2m_max,precipitation_sum,windspeed_10m_max&timezone=Europe%2FBerlin')",
+                "type": "Expression"
+            }
+        }
+    }
+}

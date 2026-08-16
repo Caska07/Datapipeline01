@@ -1,0 +1,33 @@
+{
+    "name": "PL_Load_Weer",
+    "properties": {
+        "activities": [
+            {
+                "name": "Copy_WeerZuidLimburg",
+                "type": "Copy",
+                "inputs": [{
+                    "referenceName": "DS_Weer_REST",
+                    "type": "DatasetReference",
+                    "parameters": {
+                        "latitude": { "value": "@pipeline().parameters.RegioLatitude", "type": "Expression" },
+                        "longitude": { "value": "@pipeline().parameters.RegioLongitude", "type": "Expression" },
+                        "vanaf": { "value": "@pipeline().parameters.StartDatum", "type": "Expression" },
+                        "tot": { "value": "@pipeline().parameters.EindDatum", "type": "Expression" }
+                    }
+                }],
+                "outputs": [{ "referenceName": "DS_Staging_WEER", "type": "DatasetReference" }],
+                "typeProperties": {
+                    "source": { "type": "RestSource", "httpRequestTimeout": "00:01:40" },
+                    "sink": { "type": "AzureSqlSink", "writeBehavior": "insert", "preCopyScript": "TRUNCATE TABLE stg.WEER" }
+                }
+            }
+        ],
+        "parameters": {
+            "StartDatum": { "type": "string", "defaultValue": "2024-01-01" },
+            "EindDatum": { "type": "string", "defaultValue": "2026-08-16" },
+            "RegioLatitude": { "type": "string", "defaultValue": "50.8882" },
+            "RegioLongitude": { "type": "string", "defaultValue": "5.9795" }
+        },
+        "annotations": []
+    }
+}
